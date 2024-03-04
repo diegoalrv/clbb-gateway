@@ -10,8 +10,7 @@ COPY main.py ./
 
 # Instala las dependencias
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --upgrade paramiko cryptography
-
+# RUN pip install --upgrade paramiko cryptography
 
 # Expone el puerto en el que tu aplicación se ejecutará
 EXPOSE 8520
