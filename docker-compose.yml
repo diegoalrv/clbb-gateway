@@ -5,8 +5,9 @@ networks:
     external: true
 
 services:
-  api_gateway:
-    container_name: api_gateway
+  docker_gateway:
+    container_name: docker_gateway
+    restart: always
     build: .
     command: uvicorn main:app --host 0.0.0.0 --port 8520
     ports:
