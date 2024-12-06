@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import PlainTextResponse
 import docker
 import json
 
@@ -22,8 +23,13 @@ async def create_container(image: str, request_data: dict):
 
     # Extract container parameters
     container_params = request_data.get("container_params", {})
+    
     # Extract indicator parameters as environment variables for the container
     environment_vars = request_data.get("indicator_params", {})
+
+    image = container_params.get('image', None)
+    if not image:
+        raise HTTPException(status_code=400, detail="The image property is missing or empty")
 
     # Define the volume name
     volume_name = container_params.get('volume_name', 'tmp')
@@ -34,13 +40,16 @@ async def create_container(image: str, request_data: dict):
     # Define network
     network_name = container_params.get('network', 'clbb')
 
+    # Define auto_remove behaviour
+    auto_remove = container_params.get('auto_remove', True)
+
     # Run the container with environment variables, volumes, and networks
     container = docker_client.containers.run(
         image,
         detach=True,
         environment=environment_vars,
         volumes=volumes,
-        auto_remove=True  # Set auto_remove to True to remove the container after it exits
+        auto_remove=auto_remove  # Set auto_remove to True to remove the container after it exits
     )
 
     try:
@@ -50,11 +59,7 @@ async def create_container(image: str, request_data: dict):
     
     network.connect(container)
 
-    # Get container ID
-    container_id = container.id
-
-    return {"container_id": container_id}
-
+    return f'container: {container.id}'
 
 if __name__ == "__main__":
     import uvicorn

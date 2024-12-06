@@ -9,7 +9,7 @@ COPY requirements.txt ./
 COPY main.py ./
 
 # Instala las dependencias
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 # RUN pip install --upgrade paramiko cryptography
 
 # Expone el puerto en el que tu aplicación se ejecutará

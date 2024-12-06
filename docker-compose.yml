@@ -1,7 +1,7 @@
 version: '3'
 
 networks:
-  clbb:
+  thno:
     external: true
 
 services:
@@ -16,4 +16,4 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
     networks:
-      - clbb
+      - thno
