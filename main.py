@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import PlainTextResponse
 import docker
-import json
+import os
 
 app = FastAPI()
 docker_client = docker.from_env()
@@ -33,15 +33,16 @@ async def create_container(image: str, request_data: dict):
 
     # Define the volume name
     volume_name = container_params.get('volume_name', 'tmp')
+    volume_name = os.getenv('volume_name', volume_name)
 
     # Define volumes to be mounted
-    volumes = {volume_name: {"bind": "/app/tmp", "mode": "rw"}}
+    volumes = {volume_name: {"bind": "/usr/src/app/shared", "mode": "rw"}}
 
     # Define network
     network_name = container_params.get('network', 'clbb')
 
     # Define auto_remove behaviour
-    auto_remove = container_params.get('auto_remove', True)
+    auto_remove = container_params.get('auto_remove', 'True') == True
 
     # Run the container with environment variables, volumes, and networks
     container = docker_client.containers.run(
