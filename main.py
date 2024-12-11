@@ -60,6 +60,7 @@ async def create_container(image: str, request_data: dict):
     
     network.connect(container)
 
+    print(container.id)
     return f'container: {container.id}'
 
 if __name__ == "__main__":
