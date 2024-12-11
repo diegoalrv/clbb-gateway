@@ -33,7 +33,6 @@ async def create_container(image: str, request_data: dict):
 
     # Define the volume name
     volume_name = container_params.get('volume_name', 'tmp')
-    volume_name = os.getenv('volume_name', volume_name)
 
     # Define volumes to be mounted
     volumes = {volume_name: {"bind": "/usr/src/app/shared", "mode": "rw"}}
@@ -44,6 +43,8 @@ async def create_container(image: str, request_data: dict):
     # Define auto_remove behaviour
     auto_remove = container_params.get('auto_remove', 'True') == True
 
+    # Define volumes to be mounted
+    volumes = {volume_name: {"bind": "/usr/src/app/shared", "mode": "rw"}}
     # Run the container with environment variables, volumes, and networks
     container = docker_client.containers.run(
         image,
