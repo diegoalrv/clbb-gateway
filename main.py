@@ -41,7 +41,7 @@ async def create_container(image: str, request_data: dict):
     network_name = container_params.get('network', 'clbb')
 
     # Define auto_remove behaviour
-    auto_remove = container_params.get('auto_remove', 'True') == True
+    auto_remove = container_params.get('auto_remove', True)
 
     # Define volumes to be mounted
     volumes = {volume_name: {"bind": "/usr/src/app/shared", "mode": "rw"}}
