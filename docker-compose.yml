@@ -1,17 +1,16 @@
-# networks:
-#   thno:
-#     external: true
-
 services:
   docker_gateway:
-    container_name: docker_gateway
+    container_name: dockergateway
     restart: always
     build: .
     command: uvicorn main:app --host 0.0.0.0 --port 8520
     ports:
       - "8520:8520"
+    networks:
+      - thno
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
-    # networks:
-    #   - thno
+networks:
+  thno:
+    external: true
